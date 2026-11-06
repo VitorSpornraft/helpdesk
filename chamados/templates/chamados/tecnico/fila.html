@@ -2,8 +2,25 @@
 
 {% block content %}
 <div class="mb-6">
-    <h2 class="text-2xl font-semibold text-gray-800">Fila de Atendimento (NOC)</h2>
+    <h2 class="text-2xl font-semibold text-gray-800">Fila de Atendimento</h2>
     <p class="text-gray-600 text-sm mt-1">Gerencie os chamados abertos e seus atendimentos em andamento.</p>
+</div>
+
+<div class="border-b border-gray-200 mb-6">
+    <nav class="-mb-px flex space-x-6">
+        <a href="?aba=abertos" class="whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm transition-colors
+            {% if aba == 'abertos' %} border-blue-500 text-blue-600 {% else %} border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 {% endif %}">
+            Fila Global (Novos)
+        </a>
+        <a href="?aba=meus" class="whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm transition-colors
+            {% if aba == 'meus' %} border-yellow-500 text-yellow-600 {% else %} border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 {% endif %}">
+            Meus Atendimentos
+        </a>
+        <a href="?aba=concluidos" class="whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm transition-colors
+            {% if aba == 'concluidos' %} border-green-500 text-green-600 {% else %} border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 {% endif %}">
+            Resolvidos por Mim
+        </a>
+    </nav>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -36,14 +53,12 @@
                 {{ chamado.data_abertura|date:"d/m/Y, H:i" }}
             </div>
             
-            <!-- Lógica de botões baseada no status -->
             {% if chamado.estado == 'ABERTO' %}
             <a href="{% url 'assumir_chamado' chamado.id %}" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded shadow transition-colors">
                 Assumir
             </a>
-            {% else %}
-            <!-- URL temporária com '#' até criarmos a tela de resolução -->
-            <a href="#" class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium px-4 py-2 rounded shadow transition-colors">
+            {% elif chamado.estado == 'EM_ANDAMENTO' %}
+            <a href="{% url 'resolver_chamado' chamado.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium px-4 py-2 rounded shadow transition-colors">
                 Resolver
             </a>
             {% endif %}
