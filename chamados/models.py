@@ -24,19 +24,21 @@ class Cargo(models.Model):
 
 
 class PerfilUsuario(models.Model):
-  user = models.OneToOneField(
-      User, on_delete=models.CASCADE, verbose_name='Usuário de Acesso'
-  )
-  telefone = models.CharField(max_length=20, blank=True, null=True)
-  cargo = models.ForeignKey(
-      Cargo, on_delete=models.SET_NULL, null=True, blank=True
-  )
-  departamento = models.ForeignKey(
-      Departamento, on_delete=models.SET_NULL, null=True, blank=True
-  )
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, verbose_name='Usuário de Acesso'
+    )
+    telefone = models.CharField(max_length=20, blank=True, null=True)
+    cargo = models.ForeignKey(
+        Cargo, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    departamento = models.ForeignKey(
+        Departamento, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    is_tecnico = models.BooleanField(default=False, verbose_name='É Técnico?')
+    is_noc = models.BooleanField(default=False, verbose_name='É Gestor/NOC?')
 
-  def __str__(self):
-    return self.user.get_full_name() or self.user.username
+    def __str__(self):
+        return self.user.get_full_name() or self.user.username
 
 
 class Local(models.Model):

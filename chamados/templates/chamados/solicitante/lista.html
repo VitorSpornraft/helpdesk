@@ -27,7 +27,6 @@
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {% for chamado in chamados %}
-    <!-- A cor da borda lateral muda conforme o status do chamado -->
     <div class="bg-white p-5 rounded-lg shadow-sm border-l-4 flex flex-col h-full
         {% if chamado.estado == 'CONCLUIDO' %} border-green-500
         {% elif chamado.estado == 'EM_ANDAMENTO' %} border-yellow-500
@@ -37,7 +36,6 @@
         <div class="flex justify-between items-center mb-3">
             <span class="text-xs font-bold text-gray-400">#{{ chamado.id }}</span>
             
-            <!-- A cor da etiqueta também acompanha o status -->
             <span class="text-xs font-semibold px-2 py-1 rounded 
                 {% if chamado.estado == 'CONCLUIDO' %} bg-green-100 text-green-800
                 {% elif chamado.estado == 'EM_ANDAMENTO' %} bg-yellow-100 text-yellow-800
@@ -49,14 +47,12 @@
         
         <h3 class="text-lg font-bold text-gray-800 mb-3">{{ chamado.titulo }}</h3>
         
-        <!-- DADOS DA SOLICITAÇÃO -->
         <div class="text-sm text-gray-700 space-y-1 mb-3">
             <p><span class="font-semibold text-gray-900">Local:</span> {{ chamado.local }}</p>
             <p><span class="font-semibold text-gray-900">Equipamento:</span> {{ chamado.equipamento }}</p>
         </div>
         <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ chamado.descricao_problema }}</p>
         
-        <!-- DADOS DO ATENDIMENTO (Só aparece se houver técnico responsável) -->
         {% if chamado.responsavel %}
         <div class="mt-auto p-3 bg-gray-50 rounded border border-gray-100 text-sm text-gray-700">
             <p><span class="font-semibold text-gray-900">Técnico:</span> {{ chamado.responsavel.first_name|default:chamado.responsavel.username }}</p>
@@ -77,7 +73,6 @@
             {% endif %}
         </div>
         {% else %}
-        <!-- Empurra a data de abertura para baixo caso não tenha atendimento ainda -->
         <div class="mt-auto"></div>
         {% endif %}
         
