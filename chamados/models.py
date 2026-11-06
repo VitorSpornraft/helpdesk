@@ -102,9 +102,7 @@ class Chamado(models.Model):
   )
   equipamento = models.ForeignKey(
       Equipamento,
-      on_delete=models.SET_NULL,
-      null=True,
-      blank=True,
+      on_delete=models.PROTECT,
       verbose_name='Equipamento Envolvido',
   )
   tipo_ocorrencia = models.ForeignKey(
