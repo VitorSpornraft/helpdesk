@@ -1,0 +1,72 @@
+{% extends "chamados/base.html" %}
+{% block content %}
+<div class="mb-8">
+    <h2 class="text-3xl font-bold text-gray-800">Dashboard Gerencial</h2>
+    <p class="text-gray-500">Visão global dos atendimentos e métricas do sistema.</p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500">
+        <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Total de Chamados</h3>
+        <p class="text-3xl font-bold text-gray-800 mt-2">{{ total_chamados }}</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-red-500">
+        <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Aguardando (Abertos)</h3>
+        <p class="text-3xl font-bold text-red-600 mt-2">{{ total_abertos }}</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-yellow-500">
+        <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Em Andamento</h3>
+        <p class="text-3xl font-bold text-yellow-600 mt-2">{{ total_andamento }}</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-green-500">
+        <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Resolvidos</h3>
+        <p class="text-3xl font-bold text-green-600 mt-2">{{ total_concluidos }}</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 col-span-1">
+        <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Top Ocorrências </h3>
+        <ul class="divide-y divide-gray-100">
+            {% for tipo in chamados_por_tipo %}
+            <li class="py-3 flex justify-between items-center">
+                <span class="text-gray-700 font-medium">{{ tipo.descricao }}</span>
+                <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">{{ tipo.total }}</span>
+            </li>
+            {% empty %}
+            <li class="py-3 text-gray-500 text-sm">Nenhum dado registrado.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 col-span-2 overflow-x-auto">
+        <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Matriz de Locais x Status </h3>
+        <table class="w-full text-left border-collapse min-w-full">
+            <thead>
+                <tr class="bg-slate-100 text-slate-700 text-sm uppercase tracking-wider">
+                    <th class="p-3 font-semibold rounded-tl-lg">Local / Setor</th>
+                    <th class="p-3 font-semibold text-center text-red-600">Abertos</th>
+                    <th class="p-3 font-semibold text-center text-yellow-600">Andamento</th>
+                    <th class="p-3 font-semibold text-center text-green-600">Concluídos</th>
+                    <th class="p-3 font-semibold text-center rounded-tr-lg">Total</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for linha in pivot_locais %}
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="p-3 text-gray-800 font-medium">{{ linha.descricao }}</td>
+                    <td class="p-3 text-center font-bold {% if linha.total_abertos > 0 %}text-red-500{% else %}text-gray-300{% endif %}">{{ linha.total_abertos }}</td>
+                    <td class="p-3 text-center font-bold {% if linha.total_andamento > 0 %}text-yellow-500{% else %}text-gray-300{% endif %}">{{ linha.total_andamento }}</td>
+                    <td class="p-3 text-center font-bold {% if linha.total_concluidos > 0 %}text-green-500{% else %}text-gray-300{% endif %}">{{ linha.total_concluidos }}</td>
+                    <td class="p-3 text-center font-bold text-slate-700">{{ linha.total_geral }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="p-6 text-center text-gray-500">Sem chamados distribuídos por local.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

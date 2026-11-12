@@ -1,0 +1,39 @@
+{% extends "chamados/base.html" %}
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Gerenciar Equipamentos</h2>
+        <a href="{% url 'novo_equipamento' %}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-medium shadow-sm">+ Novo</a>
+    </div>
+
+    <form method="GET" class="mb-6 flex gap-2">
+        <input type="text" name="q" value="{{ query }}" placeholder="Buscar equipamento..." class="border border-gray-300 rounded p-2 flex-grow focus:ring-2 focus:ring-slate-500">
+        <button type="submit" class="bg-slate-700 hover:bg-slate-800 text-white px-4 py-2 rounded">Filtrar</button>
+        {% if query %}<a href="{% url 'lista_equipamentos' %}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded">Limpar</a>{% endif %}
+    </form>
+
+    <table class="w-full text-left border-collapse">
+        <thead>
+            <tr class="bg-gray-100 border-b-2 border-gray-200 text-gray-700">
+                <th class="p-3 font-semibold">ID</th>
+                <th class="p-3 font-semibold">Descrição</th>
+                <th class="p-3 font-semibold text-right">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for eq in equipamentos %}
+            <tr class="border-b hover:bg-gray-50">
+                <td class="p-3 text-gray-600">#{{ eq.id }}</td>
+                <td class="p-3">{{ eq.descricao }}</td>
+                <td class="p-3 text-right space-x-2">
+                    <a href="{% url 'editar_equipamento' eq.id %}" class="text-blue-600 hover:underline">Editar</a>
+                    <a href="{% url 'excluir_equipamento' eq.id %}" class="text-red-600 hover:underline">Excluir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3" class="p-4 text-center text-gray-500">Nenhum equipamento encontrado.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
