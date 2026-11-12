@@ -82,8 +82,14 @@
     </div>
     {% empty %}
     <div class="col-span-full bg-white p-8 rounded-lg shadow-sm text-center border-t-4 border-gray-300">
-        <p class="text-gray-500 mb-4">Você não possui nenhum chamado aberto no momento.</p>
-        <a href="{% url 'novo_chamado_solicitante' %}" class="inline-block bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700 font-medium">Abrir meu primeiro chamado</a>
+        {% if aba == 'andamento' %}
+            <p class="text-gray-500">Não existem chamados em andamento no momento.</p>
+        {% elif aba == 'concluidos' %}
+            <p class="text-gray-500">Não existem chamados concluídos no momento.</p>
+        {% else %}
+            <p class="text-gray-500 mb-4">Você não possui nenhum chamado aberto no momento.</p>
+            <a href="{% url 'novo_chamado_solicitante' %}" class="inline-block bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700 font-medium">Abrir meu primeiro chamado</a>
+        {% endif %}
     </div>
     {% endfor %}
 </div>
